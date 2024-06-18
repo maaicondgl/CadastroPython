@@ -1,0 +1,29 @@
+# Arquivos de sistema
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+
+# Ambiente virtual
+venv/
+env/
+
+# Arquivos de log e cache
+*.log
+*.cache
+
+# Arquivos gerados durante o desenvolvimento
+.idea/
+.vscode/
+
+# Dependências e pacotes instalados
+*.egg-info/
+dist/
+build/
+
+# Arquivo de configuração do Python
+*.pyc
+
+# Outros arquivos gerados
+*.swp
+.DS_Store
