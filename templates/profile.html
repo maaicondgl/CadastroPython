@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Usuário</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='profilestyle.css') }}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>DEVXP</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="/logout">Logout</a></li> <!-- Adicione o link para logout -->
+            </ul>
+        </nav>
+    </header>
+
+    <div class="profile-container">
+        <h2>Perfil do Usuário</h2>
+        <div class="user-info">
+            <p><strong>Usuário:</strong> {{ current_user.username }}</p> <!-- Exemplo de acesso ao username do usuário logado -->
+            <!-- Adicione mais informações do perfil conforme necessário -->
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script> <!-- Verifique o caminho correto para seu arquivo JavaScript -->
+</body>
+</html>
