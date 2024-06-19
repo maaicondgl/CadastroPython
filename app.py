@@ -21,7 +21,6 @@ db = init_app(app)
 class User:
     def __init__(self, user_id):
         self.id = user_id
-        # Adicione outros atributos do usuário conforme necessário
 
     def get_id(self):
         return str(self.id)
@@ -30,6 +29,7 @@ class User:
 @login_manager.user_loader
 def load_user(user_id):
     return User(user_id)
+
 # Adiciona os recursos da API
 api.add_resource(CustomerList, '/cadastros')
 api.add_resource(CustomerCreate, '/cadastros/create')

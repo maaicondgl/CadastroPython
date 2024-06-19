@@ -84,9 +84,7 @@ class userLogin(Resource):
 
         if user and user.password == password:
             user_obj = User(username)
-            login_user(user_obj)  # Realiza o login do usuário
-
-            # Opcional: Defina o token de acesso se necessário
+            login_user(user_obj)
             token_access = create_access_token(identity=user.userId)
             return {'access_token': token_access}, 200
         else:

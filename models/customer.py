@@ -52,7 +52,7 @@ class CustomerModel(db.Model):
         new_user = User(
             userName=self.userName
         )
-        new_user.set_password(self.password)  # Define a senha usando método apropriado
+        new_user.set_password(self.password)
 
         db.session.add(new_user)
         db.session.commit()
