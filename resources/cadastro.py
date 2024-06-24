@@ -73,7 +73,16 @@ class CustomerDelete(Resource):
             customer.deleteCustomer()
             return{'message': 'Cadastro deletado com sucesso'}, 200;
 
-class userLogin(Resource):
+   
+class search_partial(Resource):
+    def get(self, name):
+        customers = CustomerModel.search_by_partial_name(name)
+        if customers:
+            return [customer.json() for customer in customers], 200
+        else:
+            return {'message': 'Nenhum cadastro encontrado'}, 404
+
+class UserLogin(Resource):
     @classmethod
     def post(cls):
         dados = request.get_json()
@@ -84,7 +93,9 @@ class userLogin(Resource):
 
         if user and user.password == password:
             user_obj = User(username)
-            login_user(user_obj)
+            login_user(user_obj)  # Realiza o login do usuário
+
+            # Opcional: Defina o token de acesso se necessário
             token_access = create_access_token(identity=user.userId)
             return {'access_token': token_access}, 200
         else:

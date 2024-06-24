@@ -1,7 +1,9 @@
-from db.db import db
 import uuid
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.orm import sessionmaker
+from db.db import db
+
 
 class CustomerModel(db.Model):
     __tablename__ = 'usuarios'
@@ -80,6 +82,10 @@ class CustomerModel(db.Model):
     def allCustomer(cls):
         return cls.query.all()
 
+    @classmethod
+    def search_by_partial_name(cls, partial_name):
+        return cls.query.filter(cls.name.ilike(f"%{partial_name}%")).all()
+    
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
