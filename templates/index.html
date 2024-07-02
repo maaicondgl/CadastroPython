@@ -5,25 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEVXP</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="static/js/login.js" defer></script>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <h1>DEVXP</h1>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="cadastro.html">Cadastre-se</a></li>
-                <!-- Adicione outros itens de menu conforme necessário -->
-            </ul>
-        </nav>
-    </header>
-
+    {% include 'header_ logged_out.html'%}
     <div class="login-container">
         <h2>Login</h2>
-        <form action="/login" method="POST" id="login-form">
-        
+        <form id="login-form">
             <div class="form-group">
                 <label for="username">Usuário</label>
                 <input type="text" id="username" name="username" required>
@@ -34,11 +22,8 @@
             </div>
             <button type="submit">Entrar</button>
         </form>
-        <p>Não tem uma conta? <a href="cadastro.html">Cadastre-se</a></p>
+        <p>Não tem uma conta? <a href="register">Cadastre-se</a></p>
     </div>
-
-    <!-- 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-    -->
+    {% include 'footer.html'%}
 </body>
 </html>

@@ -65,7 +65,7 @@ class CustomerList(Resource):
         }
     })
     def get(self):
-        customerList = CustomerModel.allCustomer()
+        customerList = CustomerModel.all_customer()
         if not customerList:
             return {'message': 'Não existem cadastros'}, 500
         else:
@@ -127,10 +127,10 @@ class CustomerCreate(Resource):
         dados = CustomerCreate.argumentos.parse_args()
         customer = CustomerModel(**dados)
         try:
-            if customer.findCustomerByUsername(dados['userName']):
+            if customer.find_customer_by_username(dados['userName']):
                 return {'message': f'Erro ao criar Customer: userName {dados["userName"]} já existe'}, 500
             else:
-                customer.createCustomer()
+                customer.create_customer()
                 return customer.json(), 200
         except Exception as e:
             return {'message': f'Erro ao criar Customer: {str(e)}'}, 500
@@ -236,7 +236,7 @@ class CustomerUpdate(Resource):
             name = dados.get('name')
             rg = dados.get('rg')
             cpf = dados.get('cpf')
-            userRegistered.updateCustomer(name, rg, cpf)
+            userRegistered.update_customer(name, rg, cpf)
             return userRegistered.json(), 200
         else:
             return {'message': 'cadastro não encontrado'}, 404
@@ -272,7 +272,7 @@ class CustomerDelete(Resource):
     def delete(self, userId):
         customer = CustomerModel.find_customer(userId)
         if customer:
-            customer.deleteCustomer()
+            customer.delete_customer()
             return {'message': 'Cadastro deletado com sucesso'}, 200
         else:
             return {'message': 'Customer não encontrado'}, 400
@@ -347,6 +347,8 @@ class UserLogin(Resource):
                 'schema': {
                     'type': 'object',
                     'properties': {
+                        'userId': {'type': 'string'},
+                        'userName': {'type': 'string'},
                         'access_token': {'type': 'string'}
                     }
                 }
@@ -367,14 +369,14 @@ class UserLogin(Resource):
         username = dados.get('userName')
         password = dados.get('password')
 
-        user = CustomerModel.findCustomerByUsername(username)
+        user_info = CustomerModel.find_customer_by_username(username)
 
-        if user and user.password == password:
+        if user_info and user_info.get('userId'):
             user_obj = User(username)
             login_user(user_obj)
 
-            token_access = create_access_token(identity=user.userId)
-            return {'access_token': token_access}, 200
+            access_token = create_access_token(identity=str(user_info['userId']))
+
+            return {'userId': str(user_info['userId']), 'userName': user_info['userName'], 'access_token': access_token}, 200
         else:
             return {'message': 'Usuário ou senha incorretos'}, 401
-        

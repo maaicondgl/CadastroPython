@@ -13,6 +13,7 @@ class CustomerModel(db.Model):
     cpf = db.Column(db.String(11), unique=True)
     userName = db.Column(db.String(30))
     password = db.Column(db.String(40))
+    notepads = db.relationship('NotepadModel', backref='customer', lazy=True)
 
     def __init__(self, name, rg, cpf, userName, password) -> None:
         self.userId = str(uuid.uuid4())
@@ -33,14 +34,17 @@ class CustomerModel(db.Model):
         }
 
     @classmethod
-    def findCustomerByUsername(cls, userName):
-        return cls.query.filter_by(userName=userName).first()
+    def find_customer_by_username(cls, userName):
+        user =  cls.query.filter_by(userName=userName).first()
+        if user:
+            return {'userId': user.userId, 'userName': user.userName}
+        return None
 
     @classmethod
     def find_customer(cls, userId):
         return cls.query.filter_by(userId=userId).first()
 
-    def createCustomer(self):
+    def create_customer(self):
         if CustomerModel.query.filter_by(rg=self.rg).first():
             raise ValueError(f"RG '{self.rg}' já está em uso por outro usuário.")
         
@@ -59,7 +63,7 @@ class CustomerModel(db.Model):
         db.session.add(new_user)
         db.session.commit()
 
-    def updateCustomer(self, name, rg, cpf):
+    def update_customer(self, name, rg, cpf):
         if rg != self.rg and CustomerModel.query.filter_by(rg=rg).first():
             raise ValueError(f"RG '{rg}' já está em uso por outro usuário.")
         
@@ -70,16 +74,16 @@ class CustomerModel(db.Model):
         self.rg = rg
         self.cpf = cpf
 
-    def saveCustomer(self):
+    def save_customer(self):
         db.session.add(self)
         db.session.commit()
 
-    def deleteCustomer(self):
+    def delete_customer(self):
         db.session.delete(self)
         db.session.commit()
     
     @classmethod
-    def allCustomer(cls):
+    def all_customer(cls):
         return cls.query.all()
 
     @classmethod
@@ -114,3 +118,26 @@ class User(UserMixin, db.Model):
     @classmethod
     def find_by_id(cls, user_id):
         return cls.query.get(user_id)
+
+
+class NotepadModel(db.Model):
+
+    __tablename__ = 'documentos'
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text)
+    customer_id = db.Column(db.String(36), db.ForeignKey('usuarios.userId'), nullable=False)
+
+    def __init__(self, text, customer_id):
+        self.text = text
+        self.customer_id = customer_id
+
+    def json(self):
+        return {
+            'id': self.id,
+            'text': self.text,
+            'customer_id': self.customer_id
+        }
+
+    def save_text(self):
+        db.session.add(self)
+        db.session.commit()

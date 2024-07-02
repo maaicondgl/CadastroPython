@@ -91,8 +91,9 @@ label {
     margin-bottom: 5px;
 }
 
-input[type="text"],
-input[type="password"] {
+
+#username[type="text"],
+#password[type="password"] {
     width: 100%;
     padding: 8px;
     font-size: 16px;
@@ -128,4 +129,13 @@ p a {
 
 p a:hover {
     text-decoration: underline;
+}
+footer {
+    background-color: #333; /* Cor de fundo do footer */
+    color: #fff; /* Cor do texto */
+    padding: 20px 0; /* Espaçamento interno do footer */
+    text-align: center; /* Alinhamento do texto centralizado */
+    position: absolute; /* Posição fixa no rodapé */
+    width: 100%; /* Largura total do footer */
+    bottom: 0; /* Fixar no final da página */
 }

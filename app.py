@@ -4,11 +4,13 @@ from flask_jwt_extended import JWTManager
 from flask_login import LoginManager
 from db.db import init_app
 from resources.cadastro import CustomerList, CustomerCreate, CustomerSearch, CustomerDelete, CustomerUpdate, UserLogin, search_partial
+from resources.publish_document import CreateDocument
 from resources.swagger_config import configure_swagger, CustomerList, CustomerCreate, CustomerSearch, CustomerDelete, CustomerUpdate, UserLogin, search_partial
+from routes.routes_login import  login_bp
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'sua_chave_secreta_aqui'
-
+app.register_blueprint(login_bp)
 api = Api(app)
 
 jwt = JWTManager(app)
@@ -36,6 +38,7 @@ api.add_resource(search_partial, '/cadastros/search-partial/<string:name>')
 api.add_resource(CustomerDelete, '/cadastros/delete/<string:userId>')
 api.add_resource(CustomerUpdate, '/cadastros/update/<string:userId>')
 api.add_resource(UserLogin, '/login')
+api.add_resource(CreateDocument, '/create_document')
 
 configure_swagger(app)
 
